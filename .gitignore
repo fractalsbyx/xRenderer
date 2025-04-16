@@ -9,6 +9,14 @@
 *.dll
 *.lib
 
-*CMakeFiles/*
+*Makefile
+
+*/CMakeFiles/*
+*/CMakeFiles*
+*CMakeFiles*
+*cmake_install.cmake
+
+*main
+*main-debug
 
 *.vscode*
