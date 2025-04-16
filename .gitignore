@@ -1,5 +1,4 @@
 *CMakeCache.txt
-*.cmake
 *.o
 *.so
 *.a
@@ -11,3 +10,5 @@
 *.lib
 
 *CMakeFiles/*
+
+*.vscode*
