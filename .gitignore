@@ -1,0 +1,13 @@
+*CMakeCache.txt
+*.cmake
+*.o
+*.so
+*.a
+*.d
+*.out
+*.exe
+*.obj
+*.dll
+*.lib
+
+*CMakeFiles/*

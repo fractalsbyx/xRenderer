@@ -9,6 +9,7 @@
 struct Complex {
   coordType x;
   coordType y;
+  Complex() {}
   Complex(coordType x_val, coordType y_val) : x(x_val), y(y_val) {}
   Complex(const Complex &other) : x(other.x), y(other.y) {}
 
@@ -62,15 +63,15 @@ struct Complex {
   }
   Complex &operator*=(const Complex &other) {
     coordType temp_x = x;
-    x = x * other.x - y * other.y;
-    y = temp_x * other.y + y * other.x;
+    x                = x * other.x - y * other.y;
+    y                = temp_x * other.y + y * other.x;
     return *this;
   }
   Complex &operator/=(const Complex &other) {
-    coordType denom = other.x * other.x + other.y * other.y;
+    coordType denom  = other.x * other.x + other.y * other.y;
     coordType temp_x = x;
-    x = (x * other.x + y * other.y) / denom;
-    y = (y * other.x - temp_x * other.y) / denom;
+    x                = (x * other.x + y * other.y) / denom;
+    y                = (y * other.x - temp_x * other.y) / denom;
     return *this;
   }
 
@@ -106,14 +107,14 @@ struct Complex {
 
   // Other functions
 
-  Complex real() const { return Complex(x, 0); }
-  Complex imag() const { return Complex(0, y); }
-  Complex conjugate() const { return Complex(x, -y); }
+  Complex   real() const { return Complex(x, 0); }
+  Complex   imag() const { return Complex(0, y); }
+  Complex   conjugate() const { return Complex(x, -y); }
   coordType mag() const { return std::sqrt(x * x + y * y); }
   coordType mag2() const { return x * x + y * y; }
 
   coordType arg() const { return std::atan2(y, x); }
-  Complex exp() const {
+  Complex   exp() const {
     return Complex(std::exp(x) * std::cos(y), std::exp(x) * std::sin(y));
   }
   Complex log() const { return Complex(std::log(mag()), arg()); }
@@ -174,10 +175,10 @@ struct Complex {
   }
 
   // Comparison operators
-  bool operator==(const Complex &other) const {
-    return (x == other.x && y == other.y);
-  }
-  bool operator!=(const Complex &other) const { return !(*this == other); }
+  // bool operator==(const Complex &other) const {
+  //   return (x == other.x && y == other.y);
+  // }
+  // bool operator!=(const Complex &other) const { return !(*this == other); }
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Complex &c) {
@@ -207,27 +208,27 @@ inline Complex operator/(const coordType &scalar, const Complex &c) {
   coordType denom = c.x * c.x + c.y * c.y;
   return Complex((scalar * c.x) / denom, (-scalar * c.y) / denom);
 }
-inline Complex real(const Complex &c) { return c.real(); }
-inline Complex imag(const Complex &c) { return c.imag(); }
-inline Complex conj(const Complex &c) { return c.conjugate(); }
+inline Complex   real(const Complex &c) { return c.real(); }
+inline Complex   imag(const Complex &c) { return c.imag(); }
+inline Complex   conj(const Complex &c) { return c.conjugate(); }
 inline coordType mag(const Complex &c) { return c.mag(); }
 inline coordType mag2(const Complex &c) { return c.mag2(); }
 inline coordType arg(const Complex &c) { return c.arg(); }
-inline Complex exp(const Complex &c) { return c.exp(); }
-inline Complex log(const Complex &c) { return c.log(); }
-inline Complex sqrt(const Complex &c) { return c.sqrt(); }
-inline Complex sin(const Complex &c) { return c.sin(); }
-inline Complex cos(const Complex &c) { return c.cos(); }
-inline Complex tan(const Complex &c) { return c.tan(); }
-inline Complex sinh(const Complex &c) { return c.sinh(); }
-inline Complex cosh(const Complex &c) { return c.cosh(); }
-inline Complex tanh(const Complex &c) { return c.tanh(); }
-inline Complex asin(const Complex &c) { return c.asin(); }
-inline Complex acos(const Complex &c) { return c.acos(); }
-inline Complex atan(const Complex &c) { return c.atan(); }
-inline Complex asinh(const Complex &c) { return c.asinh(); }
-inline Complex acosh(const Complex &c) { return c.acosh(); }
-inline Complex atanh(const Complex &c) { return c.atanh(); }
-inline Complex abs(const Complex &c) { return c.abs(); }
+inline Complex   exp(const Complex &c) { return c.exp(); }
+inline Complex   log(const Complex &c) { return c.log(); }
+inline Complex   sqrt(const Complex &c) { return c.sqrt(); }
+inline Complex   sin(const Complex &c) { return c.sin(); }
+inline Complex   cos(const Complex &c) { return c.cos(); }
+inline Complex   tan(const Complex &c) { return c.tan(); }
+inline Complex   sinh(const Complex &c) { return c.sinh(); }
+inline Complex   cosh(const Complex &c) { return c.cosh(); }
+inline Complex   tanh(const Complex &c) { return c.tanh(); }
+inline Complex   asin(const Complex &c) { return c.asin(); }
+inline Complex   acos(const Complex &c) { return c.acos(); }
+inline Complex   atan(const Complex &c) { return c.atan(); }
+inline Complex   asinh(const Complex &c) { return c.asinh(); }
+inline Complex   acosh(const Complex &c) { return c.acosh(); }
+inline Complex   atanh(const Complex &c) { return c.atanh(); }
+inline Complex   abs(const Complex &c) { return c.abs(); }
 
 #endif // COMPLEX_H

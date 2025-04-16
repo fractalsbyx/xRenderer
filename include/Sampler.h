@@ -2,15 +2,12 @@
 #define SAMPLER_H
 
 #include "Meshpoint.h"
-#include "XYMapping.h"
-template <typename Color> class Sampler {
+template <typename T> class Sampler {
 public:
-  Sampler();
+  Sampler()          = default;
   virtual ~Sampler() = default;
 
-  virtual Color sample(const Meshpoint &p, const XYMapping *mapping) {
-    return Color(0, 0, 0);
-  }
+  virtual T sample(const Complex &p) const { return T(); }
 };
 
 #endif // SAMPLER_H

@@ -11,21 +11,34 @@
 #include <vector>
 
 constexpr float color_loop_length = 360.0;
-class Gradient {
+template <typename Color> class Gradient {
 public:
   class Node {
   public:
-    enum class InterpolationMethod { LINEAR, SMOOTH };
+    enum class InterpolationMethod {
+      LINEAR,
+      SMOOTH
+    };
     Node(const Color &c, const float &p) : color(c), position(p) {}
-    float position;
-    Color color;
-    InterpolationMethod left_interp = InterpolationMethod::LINEAR;
+    float               position;
+    Color               color;
+    InterpolationMethod left_interp  = InterpolationMethod::LINEAR;
     InterpolationMethod right_interp = InterpolationMethod::LINEAR;
 
     bool operator<(const Node &other) const {
       return position < other.position;
     }
   };
+
+  void addNode(const Color &color, const float &position) {
+    if (position < 0 || position > color_loop_length) {
+      throw std::out_of_range("Position out of range");
+    }
+    nodes.insert(Node(color, position));
+    reCalculate();
+  }
+
+  void clearNodes() { nodes.clear(); }
 
   Color interpolate(const Node &lower, const Node &upper,
                     const float &fraction) {
@@ -39,16 +52,13 @@ public:
    * @return The color at the given position.
    */
   Color calculateColor(const float &position) {
+    if (nodes.empty()) { return Color::black(); }
     const float pos = std::fmod(position, color_loop_length);
     auto upper_it = lower_bound(nodes.begin(), nodes.end(), Node(Color(), pos));
-    if (upper_it == nodes.end()) {
-      upper_it = nodes.begin();
-    }
+    if (upper_it == nodes.end()) { upper_it = nodes.begin(); }
     auto lower_it =
         lower_bound(nodes.rbegin(), nodes.rend(), Node(Color(), position));
-    if (lower_it == nodes.rend()) {
-      lower_it = nodes.rbegin();
-    }
+    if (lower_it == nodes.rend()) { lower_it = nodes.rbegin(); }
     float dist_lower = directed_periodic_difference(
         position, lower_it->position, color_loop_length);
     float dist_upper = directed_periodic_difference(
@@ -63,11 +73,17 @@ public:
    * @return The color at the given index.
    */
   Color calculateColor(const unsigned int &index) {
-    if (index >= resolution) {
-      throw std::out_of_range("Index out of range");
-    }
+    if (index >= resolution) { throw std::out_of_range("Index out of range"); }
     float position = color_loop_length * (float(index) / float(resolution));
     return calculateColor(position);
+  }
+
+  void reCalculate() {
+    lookup.clear();
+    lookup.reserve(resolution);
+    for (unsigned int i = 0; i < resolution; ++i) {
+      lookup.push_back(calculateColor(i));
+    }
   }
 
   /**
@@ -82,9 +98,9 @@ public:
   }
 
 private:
-  std::set<Node> nodes;
+  std::set<Node>     nodes;
   std::vector<Color> lookup;
-  unsigned int resolution; // Number of colors in the gradient lookup
+  unsigned int       resolution; // Number of colors in the gradient lookup
 };
 
 #endif // GRADIENT_H

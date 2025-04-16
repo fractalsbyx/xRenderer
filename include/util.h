@@ -1,6 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <cmath>
+
 template <typename T>
 T periodic_difference(const T &a, const T &b, const T &period) {
   T diff = a - b;
@@ -15,10 +17,8 @@ T periodic_difference(const T &a, const T &b, const T &period) {
 template <typename T>
 T directed_periodic_difference(const T &upper, const T &lower,
                                const T &period) {
-  T diff = (upper % period) - (lower % period);
-  if (diff <= 0) {
-    diff += period;
-  }
+  T diff = std::fmod(upper, period) - std::fmod(lower, period);
+  if (diff <= 0) { diff += period; }
   return diff;
 }
 

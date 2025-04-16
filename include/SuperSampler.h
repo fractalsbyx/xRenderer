@@ -1,17 +1,37 @@
 #ifndef SUPERSAMPLER_H
 #define SUPERSAMPLER_H
 
+#include "Complex.h"
 #include "Meshpoint.h"
-#include "Sampler.h"
 #include "XYMapping.h"
-template <typename Color> class SuperSampler {
+#include "typedefs.h"
+#include <vector>
+// class SuperSampler {
+// public:
+//   SuperSampler();
+//   virtual ~SuperSampler() = default;
+//
+//   Color superSample(const Meshpoint &p, const XYMapping *mapping,
+//                     const Sampler<Color> *sampler) const {
+//     return this->superSample(p.toComplex(), mapping, sampler);
+//   }
+//
+//   virtual Color superSample(const Complex &p, const XYMapping *mapping,
+//                             const Sampler<Color> *sampler) const {
+//     return sampler->sample(mapping->getLocation(p));
+//   }
+// };
+
+class SuperSampler {
 public:
-  SuperSampler();
+  SuperSampler()          = default;
   virtual ~SuperSampler() = default;
 
-  virtual Color supersample(const Meshpoint &p, const XYMapping *mapping,
-                            const Sampler *sampler) {
-    return sampler->sample(p, mapping);
+  virtual std::vector<Complex> getSamplePoints(const Complex  &p,
+                                               const XYMapping mapping) {
+    std::vector<Complex> samplePoints;
+    samplePoints.push_back(mapping.getLocation(p));
+    return samplePoints;
   }
 };
 

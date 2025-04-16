@@ -6,70 +6,83 @@
 #include "typedefs.h"
 #include <cmath>
 #include <unordered_map>
+
 class XYMapping {
 public:
-  Complex getComplex(Meshpoint mPoint) const {
-    auto it = cache.find(mPoint);
-    if (it != cache.end()) {
-      return it->second;
-    }
-    const Complex input_coord(coordType(mPoint.x_index),
-                              coordType(mPoint.y_index));
+  XYMapping(){};
+  XYMapping(const meshInt &x, const meshInt &y,
+            const Complex &c = Complex(0.0, 0.0), const coordType s = 1.0,
+            coordType r = 0.0, bool _use_degrees = false)
+      : xres(x), yres(y), center(c), scale(s), rotation(r),
+        use_degrees(_use_degrees) {
+    resize(x, y);
+    rot_vec.x = std::cos(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
+    rot_vec.y = std::sin(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
+  }
 
-    // const Complex returnVal =
-    //     center + rot_vec * scale * (input_coord - (spatial_extent / 2.0)) /
-    //                  (greater_dim / 2.0);
+  Complex getLocation(const Complex &p) const {
+    // AAauto it = cache.find(p);
+    // AAif (it != cache.end()) { return it->second; }
+    //  const Complex returnVal =
+    //      center + rot_vec * scale * (p - (spatial_extent / 2.0)) /
+    //                   (greater_dim / 2.0);
 
-    const Complex returnVal =
-        center + rot_vec * scale *
-                     (2.0 * input_coord - (spatial_extent - 1.0)) /
-                     (greater_dim - 1.0);
+    const Complex returnVal = center + rot_vec * scale *
+                                           (2.0 * p - (spatial_extent - 1.0)) /
+                                           (greater_dim - 1.0);
 
-    cache[mPoint] = returnVal;
+    // AAcache[p] = returnVal;
     return returnVal;
   }
 
   void setCenter(const Complex &c) {
     center = c;
-    cache.clear();
+    // AAcache.clear();
   }
   void setScale(const coordType &s) {
     scale = s;
-    cache.clear();
+    // AAcache.clear();
   }
   void setRotation(const coordType &r) {
-    rotation = r;
+    rotation  = r;
     rot_vec.x = std::cos(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
     rot_vec.y = std::sin(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
-    cache.clear();
+    // AAcache.clear();
   }
-  void setLocation(const coordType &r, const Complex &c) {
-    rotation = r;
-    center = c;
+  void setLocation(const Complex &c, const coordType &r) {
+    rotation  = r;
+    center    = c;
     rot_vec.x = std::cos(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
     rot_vec.y = std::sin(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
-    cache.clear();
+    // AAcache.clear();
+  }
+
+  void resize(meshInt x, meshInt y) {
+    xres           = x;
+    yres           = y;
+    spatial_extent = Complex(coordType(xres), coordType(yres));
+    greater_dim    = coordType(std::max(xres, yres));
+    // AAcache.clear();
   }
 
 private:
-  const Complex spatial_extent = Complex(coordType(xres), coordType(yres));
-  coordType greater_dim = coordType(std::max(xres, yres));
-
   // Dimensions of the grid
-  meshInt xres = 0;
-  meshInt yres = 0;
-  meshInt size = xres * yres;
+  meshInt   xres;
+  meshInt   yres;
+  Complex   spatial_extent;
+  coordType greater_dim;
 
   // Inputs
-  Complex center;
+  Complex   center;
   coordType scale;
   coordType rotation;
-  bool use_degrees = false;
+  bool      use_degrees = false;
 
   // Precomputed values
   Complex rot_vec;
 
-  mutable std::unordered_map<Meshpoint, Complex> cache;
+  // Cache for computed locations
+  // AAmutable std::unordered_map<Complex, Complex> cache;
 };
 
 #endif // XYMAPPING_H
