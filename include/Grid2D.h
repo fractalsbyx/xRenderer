@@ -7,7 +7,7 @@
 
 template <typename dataType> class Grid2D {
 public:
-  Grid2D() = default;
+  Grid2D(){};
   Grid2D(meshInt x, meshInt y) : xres(x), yres(y), capacity(x * y) {
     if (capacity > 0) { data = new dataType[capacity]; }
   }
@@ -72,7 +72,7 @@ public:
 private:
   meshInt   xres     = 0;
   meshInt   yres     = 0;
-  meshInt   capacity = xres * yres;
+  meshInt   capacity = 0;
   dataType *data     = nullptr;
 };
 

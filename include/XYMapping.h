@@ -9,8 +9,7 @@
 
 class XYMapping {
 public:
-  XYMapping(){};
-  XYMapping(const meshInt &x, const meshInt &y,
+  XYMapping(const meshInt &x = 0, const meshInt &y = 0,
             const Complex &c = Complex(0.0, 0.0), const coordType s = 1.0,
             coordType r = 0.0, bool _use_degrees = false)
       : xres(x), yres(y), center(c), scale(s), rotation(r),
@@ -49,9 +48,11 @@ public:
     rot_vec.y = std::sin(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
     // AAcache.clear();
   }
-  void setLocation(const Complex &c, const coordType &r) {
-    rotation  = r;
+  void setLocation(const Complex &c, const coordType &s,
+                   const coordType &r = 0.0) {
     center    = c;
+    scale     = s;
+    rotation  = r;
     rot_vec.x = std::cos(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
     rot_vec.y = std::sin(rotation * (use_degrees ? 1.0 : (M_PI / 180.0)));
     // AAcache.clear();
@@ -73,9 +74,9 @@ private:
   coordType greater_dim;
 
   // Inputs
-  Complex   center;
-  coordType scale;
-  coordType rotation;
+  Complex   center      = Complex(0.0, 0.0);
+  coordType scale       = 2.0;
+  coordType rotation    = 0.0;
   bool      use_degrees = false;
 
   // Precomputed values

@@ -20,8 +20,8 @@ public:
       SMOOTH
     };
     Node(const Color &c, const float &p) : color(c), position(p) {}
-    float               position;
     Color               color;
+    float               position;
     InterpolationMethod left_interp  = InterpolationMethod::LINEAR;
     InterpolationMethod right_interp = InterpolationMethod::LINEAR;
 
@@ -42,7 +42,7 @@ public:
 
   Color interpolate(const Node &lower, const Node &upper,
                     const float &fraction) {
-    float interp_val = 0; // To be implemented
+    float interp_val = fraction; // To be implemented
     return Color::interpolate(lower.color, upper.color, interp_val);
   }
 
@@ -100,7 +100,7 @@ public:
 private:
   std::set<Node>     nodes;
   std::vector<Color> lookup;
-  unsigned int       resolution; // Number of colors in the gradient lookup
+  unsigned int resolution = 360; // Number of colors in the gradient lookup
 };
 
 #endif // GRADIENT_H

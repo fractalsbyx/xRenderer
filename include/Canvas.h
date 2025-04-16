@@ -17,7 +17,8 @@ public:
   Canvas(const meshInt &_xres, const meshInt &_yres,
          const std::shared_ptr<SuperSampler> &_superSampler =
              std::make_shared<SuperSampler>())
-      : xres(_xres), yres(_yres), superSampler(_superSampler) {
+      : xres(_xres), yres(_yres), capacity(xres * yres),
+        superSampler(_superSampler) {
     setResolution(xres, yres);
   }
 
@@ -34,8 +35,9 @@ public:
     superSampler = sampler;
   }
 
-  void setLocation(const Complex &x, const coordType &rotation) {
-    xymapping.setLocation(x, rotation);
+  void setLocation(const Complex &x, const coordType &s,
+                   const coordType &rotation = 0.0) {
+    xymapping.setLocation(x, s, rotation);
   }
 
   void addLayer(
@@ -51,7 +53,8 @@ public:
       Meshpoint            mPoint = grid.getMeshPoint(linear_index);
       std::vector<Complex> sample_points =
           superSampler->getSamplePoints(mPoint.toComplex(), xymapping);
-      std::vector<Color> sample_colors(sample_points.size());
+      std::vector<Color> sample_colors;
+      sample_colors.reserve(sample_points.size());
       for (const Complex &sample_pt : sample_points) {
         Color sample_color = Color::blank();
         for (auto &layer : layers) {
@@ -73,14 +76,13 @@ public:
   std::vector<Layer<Color>> layers;
 
 private:
+  meshInt                       xres     = 0;
+  meshInt                       yres     = 0;
+  meshInt                       capacity = 0;
   Grid2D<Complex>               grid;
   Grid2D<Color>                 image;
   XYMapping                     xymapping;
   std::shared_ptr<SuperSampler> superSampler = nullptr;
-
-  meshInt xres     = 0;
-  meshInt yres     = 0;
-  meshInt capacity = xres * yres;
 };
 
 #endif // CANVAS_H

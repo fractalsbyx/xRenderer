@@ -107,8 +107,8 @@ struct Complex {
 
   // Other functions
 
-  Complex   real() const { return Complex(x, 0); }
-  Complex   imag() const { return Complex(0, y); }
+  coordType real() const { return x; }
+  coordType imag() const { return y; }
   Complex   conjugate() const { return Complex(x, -y); }
   coordType mag() const { return std::sqrt(x * x + y * y); }
   coordType mag2() const { return x * x + y * y; }
@@ -208,8 +208,8 @@ inline Complex operator/(const coordType &scalar, const Complex &c) {
   coordType denom = c.x * c.x + c.y * c.y;
   return Complex((scalar * c.x) / denom, (-scalar * c.y) / denom);
 }
-inline Complex   real(const Complex &c) { return c.real(); }
-inline Complex   imag(const Complex &c) { return c.imag(); }
+inline coordType real(const Complex &c) { return c.real(); }
+inline coordType imag(const Complex &c) { return c.imag(); }
 inline Complex   conj(const Complex &c) { return c.conjugate(); }
 inline coordType mag(const Complex &c) { return c.mag(); }
 inline coordType mag2(const Complex &c) { return c.mag2(); }

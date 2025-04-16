@@ -7,7 +7,7 @@ public:
   Sampler()          = default;
   virtual ~Sampler() = default;
 
-  virtual T sample(const Complex &p) const { return T(); }
+  virtual T sample([[maybe_unused]] const Complex &p) const { return T(); }
 };
 
 #endif // SAMPLER_H

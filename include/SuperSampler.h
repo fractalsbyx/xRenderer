@@ -27,8 +27,8 @@ public:
   SuperSampler()          = default;
   virtual ~SuperSampler() = default;
 
-  virtual std::vector<Complex> getSamplePoints(const Complex  &p,
-                                               const XYMapping mapping) {
+  virtual std::vector<Complex> getSamplePoints(const Complex   &p,
+                                               const XYMapping &mapping) {
     std::vector<Complex> samplePoints;
     samplePoints.push_back(mapping.getLocation(p));
     return samplePoints;

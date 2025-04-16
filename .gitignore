@@ -19,4 +19,11 @@
 *main
 *main-debug
 
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tga
+*.hdr
+
 *.vscode*

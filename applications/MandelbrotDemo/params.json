@@ -1,0 +1,13 @@
+{
+    "x_resolution": 800,
+    "y_resolution": 600,
+    "samples_per_pixel": 50,
+    "max_iterations": 10000,
+    "bailout_value": 512.0,
+    "center": {
+        "x": -1.942032320004705,
+        "y": 0.00037216961255067
+    },
+    "zoom": 234257.87,
+    "rotation": 0.0
+}
