@@ -11,6 +11,7 @@ project(myapp CXX)
 
 # Set location of files
 include_directories(${CMAKE_SOURCE_DIR}/../../include)
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/../../vendor)
 include_directories(${CMAKE_SOURCE_DIR}/../../src)
 include_directories(${CMAKE_SOURCE_DIR})
 
