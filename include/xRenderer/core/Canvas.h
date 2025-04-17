@@ -44,7 +44,7 @@ public:
   void addLayer(
       const std::shared_ptr<Sampler<Color>> &sampler,
       const std::shared_ptr<Mapping> &mapping = std::make_shared<Mapping>()) {
-    Layer layer(sampler, mapping);
+    Layer<Color> layer(sampler, mapping);
     layer.setVisible(true);
     layers.push_back(layer);
   }

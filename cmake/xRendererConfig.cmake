@@ -4,6 +4,9 @@ set(X_RENDERER_C_COMPILER "/usr/bin/cc")
 # used for all targets:
 set(X_RENDERER_CXX_FLAGS -fopenmp-simd)
 
+# set c++ standard
+set(X_RENDERER_CXX_STANDARD cxx_std_20)
+
 # _additionally_ used for debug targets:
 set(X_RENDERER_CXX_FLAGS_DEBUG -O0 -ggdb -Wa,--compress-debug-sections)
 
@@ -17,7 +20,7 @@ set(X_RENDERER_WARNING_FLAGS -pedantic -Wall -Wextra -Wmissing-braces -Woverload
 set(X_RENDERER_LINKER_FLAGS -rdynamic -fuse-ld=gold)
 
 # _additionally_ used for debug targets:
-set(X_RENDERER_LINKER_FLAGS_DEBUG -ggdb -Wl,--compress-debug-sections=zlib)
+set(X_RENDERER_LINKER_FLAGS_DEBUG -ggdb -Wl)
 
 # _additionally_ used for release targets:
 set(X_RENDERER_LINKER_FLAGS_RELEASE "")
