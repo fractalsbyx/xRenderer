@@ -20,7 +20,7 @@ set(X_RENDERER_WARNING_FLAGS -pedantic -Wall -Wextra -Wmissing-braces -Woverload
 set(X_RENDERER_LINKER_FLAGS -rdynamic -fuse-ld=gold)
 
 # _additionally_ used for debug targets:
-set(X_RENDERER_LINKER_FLAGS_DEBUG -ggdb -Wl)
+set(X_RENDERER_LINKER_FLAGS_DEBUG -ggdb)
 
 # _additionally_ used for release targets:
 set(X_RENDERER_LINKER_FLAGS_RELEASE "")
