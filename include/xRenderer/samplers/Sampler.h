@@ -1,8 +1,6 @@
 #ifndef SAMPLER_H
 #define SAMPLER_H
 
-#include <xRenderer/core/Meshpoint.h>
-
 template <typename T> class Sampler {
 public:
   Sampler()          = default;

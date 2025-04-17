@@ -1,75 +1,21 @@
-#include <iostream>
-#include <sys/types.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <IMWrite/stb_image_write.h>
 #include <json/json.hpp>
-//
+
 #include <xRenderer/color/Color.h>
-#include <xRenderer/color/ColorSpaces.h>
 #include <xRenderer/color/Gradient.h>
+#include <xRenderer/color/RGBA.h>
 #include <xRenderer/core/Canvas.h>
 #include <xRenderer/core/Complex.h>
 #include <xRenderer/core/typedefs.h>
 #include <xRenderer/mappings/Mapping.h>
-#include <xRenderer/samplers/Sampler.h>
-#include <xRenderer/super_samplers/SuperSampler.h>
+#include <xRenderer/samplers/Mandelbrot.h>
+#include <xRenderer/super_samplers/BoxFilter.h>
 
 #include <cstdint>
 #include <fstream>
-#include <memory>
-#include <random>
-
-#include <vector>
-
-class Mandelbrot : public Sampler<RGBA> {
-public:
-  Mandelbrot() = default;
-  Mandelbrot(const unsigned int &max_iter, const coordType &bailout_val,
-             std::shared_ptr<Gradient<RGBA>> grad)
-      : max_iterations(max_iter), bailout_value(bailout_val), gradient(grad) {}
-  ~Mandelbrot() override = default;
-
-  RGBA sample(const Complex &p) const override {
-    // Implement the Mandelbrot sampling logic here
-    // return RGBA::yellow();
-    Complex      z(0, 0);
-    Complex      c         = p;
-    unsigned int curr_iter = 0;
-    while (mag2(z) < bailout_value && curr_iter < max_iterations) {
-      z = z * z + c;
-      curr_iter++;
-    }
-    if (curr_iter >= max_iterations) { return RGBA(40, 10, 120); }
-    return gradient->getColor(20.f * float(curr_iter));
-  }
-  unsigned int                    max_iterations = 1000;
-  coordType                       bailout_value  = 4.0;
-  std::shared_ptr<Gradient<RGBA>> gradient       = nullptr;
-};
-
-class ShittyBoxFilter : public SuperSampler {
-public:
-  ShittyBoxFilter() = default;
-  ShittyBoxFilter(const unsigned int &samples_per_pixel)
-      : samples_per_pixel(samples_per_pixel) {}
-  ~ShittyBoxFilter() override = default;
-
-  std::vector<Complex> getSamplePoints(const Complex   &p,
-                                       const XYMapping &mapping) override {
-    std::vector<Complex> sample_points;
-    sample_points.reserve(samples_per_pixel);
-    for (unsigned int i = 0; i < samples_per_pixel; ++i) {
-      sample_points.push_back(
-          mapping.getLocation(p + Complex(dist(rng), dist(rng))));
-    }
-    return sample_points;
-  }
-
-private:
-  unsigned int                                  samples_per_pixel = 1;
-  mutable std::mt19937                          rng{2025};
-  mutable std::uniform_real_distribution<float> dist{-0.5f, 0.5f};
-};
+#include <iostream>
+#include <sys/types.h>
 
 int main() {
   // Get parameters from JSON file
@@ -103,8 +49,8 @@ int main() {
   gradient->addNode(RGBA::yellow(), 240.0);
 
   // Make a Mandelbrot sampler
-  std::shared_ptr<Sampler<RGBA>> sampler =
-      std::make_shared<Mandelbrot>(max_iterations, bailout_value, gradient);
+  std::shared_ptr<Sampler<RGBA>> sampler = std::make_shared<Mandelbrot<RGBA>>(
+      max_iterations, bailout_value, gradient);
 
   // Identity mapping
   std::shared_ptr<Mapping> identity = std::make_shared<Mapping>();
