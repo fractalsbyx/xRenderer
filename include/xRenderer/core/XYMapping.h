@@ -1,9 +1,10 @@
 #ifndef XYMAPPING_H
 #define XYMAPPING_H
 
-#include "Complex.h"
-#include "Meshpoint.h"
-#include "typedefs.h"
+#include <xRenderer/core/Complex.h>
+#include <xRenderer/core/Meshpoint.h>
+#include <xRenderer/core/typedefs.h>
+
 #include <cmath>
 #include <unordered_map>
 

@@ -1,8 +1,8 @@
 #ifndef MESHPOINT_H
 #define MESHPOINT_H
 
-#include "Complex.h"
-#include "typedefs.h"
+#include <xRenderer/core/Complex.h>
+#include <xRenderer/core/typedefs.h>
 
 struct Meshpoint {
   meshInt x_index;

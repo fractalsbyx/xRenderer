@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <cstdint>
 
-#include "Color.h"
+#include <xRenderer/color/Color.h>
+
 using mixInt = unsigned int;
 
 #pragma pack(push, 1)

@@ -1,14 +1,15 @@
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
-#include "Color.h"
-#include "typedefs.h"
-#include "util.h"
 #include <algorithm>
 #include <cmath>
 #include <set>
 #include <stdexcept>
 #include <vector>
+
+#include <xRenderer/color/Color.h>
+#include <xRenderer/core/typedefs.h>
+#include <xRenderer/core/util.h>
 
 constexpr float color_loop_length = 360.0;
 template <typename Color> class Gradient {

@@ -1,8 +1,9 @@
 #ifndef GRID2D_H
 #define GRID2D_H
 
-#include "Meshpoint.h"
-#include "typedefs.h"
+#include <xRenderer/core/Meshpoint.h>
+#include <xRenderer/core/typedefs.h>
+
 #include <stdexcept>
 
 template <typename dataType> class Grid2D {

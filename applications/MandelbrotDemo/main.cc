@@ -4,19 +4,21 @@
 #include <IMWrite/stb_image_write.h>
 #include <json/json.hpp>
 //
-#include <Canvas.h>
-#include <Color.h>
-#include <ColorSpaces.h>
-#include <Complex.h>
-#include <Gradient.h>
-#include <Mapping.h>
-#include <Sampler.h>
-#include <SuperSampler.h>
+#include <xRenderer/color/Color.h>
+#include <xRenderer/color/ColorSpaces.h>
+#include <xRenderer/color/Gradient.h>
+#include <xRenderer/core/Canvas.h>
+#include <xRenderer/core/Complex.h>
+#include <xRenderer/core/typedefs.h>
+#include <xRenderer/mappings/Mapping.h>
+#include <xRenderer/samplers/Sampler.h>
+#include <xRenderer/super_samplers/SuperSampler.h>
+
 #include <cstdint>
 #include <fstream>
 #include <memory>
 #include <random>
-#include <typedefs.h>
+
 #include <vector>
 
 class Mandelbrot : public Sampler<RGBA> {

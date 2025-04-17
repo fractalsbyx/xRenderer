@@ -1,7 +1,8 @@
 #ifndef COMPLEX_H
 #define COMPLEX_H
 
-#include "typedefs.h"
+#include <xRenderer/core/typedefs.h>
+
 #include <cmath>
 #include <iostream>
 #include <stdexcept>

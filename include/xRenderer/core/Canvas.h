@@ -1,14 +1,15 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include "Color.h"
-#include "Grid2D.h"
-#include "Layer.h"
-#include "Meshpoint.h"
-#include "Sampler.h"
-#include "SuperSampler.h"
-#include "XYMapping.h"
-#include "typedefs.h"
+#include <xRenderer/color/Color.h>
+#include <xRenderer/core/Grid2D.h>
+#include <xRenderer/core/Layer.h>
+#include <xRenderer/core/Meshpoint.h>
+#include <xRenderer/core/XYMapping.h>
+#include <xRenderer/core/typedefs.h>
+#include <xRenderer/samplers/Sampler.h>
+#include <xRenderer/super_samplers/SuperSampler.h>
+
 #include <memory>
 #include <vector>
 

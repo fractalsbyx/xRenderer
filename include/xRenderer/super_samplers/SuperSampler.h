@@ -1,10 +1,11 @@
 #ifndef SUPERSAMPLER_H
 #define SUPERSAMPLER_H
 
-#include "Complex.h"
-#include "Meshpoint.h"
-#include "XYMapping.h"
-#include "typedefs.h"
+#include <xRenderer/core/Complex.h>
+#include <xRenderer/core/Meshpoint.h>
+#include <xRenderer/core/XYMapping.h>
+#include <xRenderer/core/typedefs.h>
+
 #include <vector>
 // class SuperSampler {
 // public:

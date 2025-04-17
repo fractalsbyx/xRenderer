@@ -1,10 +1,11 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "Color.h"
-#include "Mapping.h"
-#include "Sampler.h"
-#include "typedefs.h"
+#include <xRenderer/color/Color.h>
+#include <xRenderer/core/typedefs.h>
+#include <xRenderer/mappings/Mapping.h>
+#include <xRenderer/samplers/Sampler.h>
+
 #include <algorithm>
 #include <cstdint>
 #include <memory>
