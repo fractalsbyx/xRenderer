@@ -12,6 +12,7 @@
 #include <xRenderer/samplers/Mandelbrot.h>
 #include <xRenderer/super_samplers/BoxFilter.h>
 
+#include <chrono>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -64,7 +65,11 @@ int main() {
   canvas.setLocation(center, scale, rotation);
   canvas.addLayer(sampler, identity);
 
+  auto start = std::chrono::high_resolution_clock::now();
   canvas.draw();
+  auto                          end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = end - start;
+  std::cout << "Draw time: " << elapsed.count() << " seconds\n";
 
   const uint8_t *imagedata =
       reinterpret_cast<const uint8_t *>(canvas.getImage().getData());

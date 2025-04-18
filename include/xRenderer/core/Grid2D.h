@@ -28,7 +28,7 @@ public:
     return data[y * xres + x];
   }
 
-  dataType &operator()(meshInt &linear_index) const {
+  dataType &operator()(const meshInt &linear_index) const {
     if (linear_index >= capacity) {
       throw std::out_of_range("Index out of range");
     }
