@@ -1,5 +1,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <IMWrite/stb_image_write.h>
+#include <SFML/Graphics.hpp>
 #include <json/json.hpp>
 
 #include <xRenderer/color/Color.h>
@@ -17,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <sys/types.h>
+#include <thread>
 
 int main() {
   // Get parameters from JSON file
@@ -43,11 +45,13 @@ int main() {
   // Set the rotation
   coordType rotation = params.at("rotation").get<float>();
 
+  std::string output_file = params.at("output_file").get<std::string>();
+
   // Make a gradient
   std::shared_ptr<Gradient<RGBA>> gradient = std::make_shared<Gradient<RGBA>>();
   gradient->addNode(RGBA::cyan(), 0.0);
   gradient->addNode(RGBA::magenta(), 120.0);
-  gradient->addNode(RGBA::yellow(), 240.0);
+  gradient->addNode(RGBA::white(), 240.0);
 
   // Make a Mandelbrot sampler
   std::shared_ptr<Sampler<RGBA>> sampler = std::make_shared<Mandelbrot<RGBA>>(
@@ -65,32 +69,57 @@ int main() {
   canvas.setLocation(center, scale, rotation);
   canvas.addLayer(sampler, identity);
 
-  auto start = std::chrono::high_resolution_clock::now();
-  canvas.draw();
-  auto                          end = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = end - start;
-  std::cout << "Draw time: " << elapsed.count() << " seconds\n";
+  auto        start = std::chrono::high_resolution_clock::now();
+  std::thread drawing(&Canvas<RGBA>::draw, &canvas);
+  auto        end = std::chrono::high_resolution_clock::now();
+  // std::chrono::duration<double> elapsed = end - start;
+  // std::cout << "Draw time: " << elapsed.count() << " seconds\n";
+
+  sf::RenderWindow window(sf::VideoMode(xres, yres), "Real-Time Grid");
+  sf::Texture      texture;
+  texture.create(xres, yres);
+  sf::Sprite sprite(texture);
+
+  std::vector<sf::Uint8> pixels(xres * yres * 4); // RGBA
+
+  // std::thread printing([&]() {
+  //   while (window.isOpen() && drawing.joinable()) {
+  //     sf::Event event;
+  //     while (window.pollEvent(event)) {
+  //       if (event.type == sf::Event::Closed) window.close();
+  //     }
+  //
+  //    texture.update(
+  //        reinterpret_cast<const uint8_t *>(canvas.getImage().getData()));
+  //    // window.clear();
+  //    window.draw(sprite);
+  //    window.display();
+  //  }
+  //}
+  //                     //, std::ref(canvas), std::ref(texture),
+  //                     std::ref(window)
+  //);
+
+  while (window.isOpen() && drawing.joinable()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) window.close();
+    }
+
+    texture.update(
+        reinterpret_cast<const uint8_t *>(canvas.getImage().getData()));
+    // window.clear();
+    window.draw(sprite);
+    window.display();
+  }
+
+  drawing.join();
+  // printing.join();
 
   const uint8_t *imagedata =
       reinterpret_cast<const uint8_t *>(canvas.getImage().getData());
 
-  /* unsigned int mid = (xres * yres) / 2;
-  std::cout << "r: " << int(imagedata[mid * 4 + 0]) << " ";
-  std::cout << "g: " << int(imagedata[mid * 4 + 1]) << " ";
-  std::cout << "b: " << int(imagedata[mid * 4 + 2]) << " ";
-  std::cout << "a: " << int(imagedata[mid * 4 + 3]) << " "; */
-  /* for (int i = 0; i < xres * yres; ++i) {
-    std::cout << "r: [" << int(imagedata[i * 4 + 0]) << ","
-              << int(canvas.getImage().getData()[i].r) << "] ";
-    std::cout << "g: [" << int(imagedata[i * 4 + 1]) << ","
-              << int(canvas.getImage().getData()[i].g) << "] ";
-    std::cout << "b: [" << int(imagedata[i * 4 + 2]) << ","
-              << int(canvas.getImage().getData()[i].b) << "] ";
-    std::cout << "a: [" << int(imagedata[i * 4 + 3]) << ","
-              << int(canvas.getImage().getData()[i].a) << "] ";
-  } */
-
-  if (stbi_write_png("test1.png", xres, yres, 4, imagedata, 4 * xres)) {
+  if (stbi_write_png(output_file.c_str(), xres, yres, 4, imagedata, 4 * xres)) {
     std::cout << "Image 1 saved!\n";
   } else {
     std::cerr << "Failed to save image.\n";

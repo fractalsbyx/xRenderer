@@ -2,12 +2,13 @@
     "x_resolution": 800,
     "y_resolution": 600,
     "samples_per_pixel": 1000,
-    "max_iterations": 1000,
+    "max_iterations": 5000,
     "bailout_value": 512.0,
     "center": {
         "x": -1.942032320004705,
         "y": 0.00037216961255067
     },
     "zoom": 234257.87,
-    "rotation": 0.0
+    "rotation": 0.0,
+    "output_file": "mandelbrot1000.png"
 }
