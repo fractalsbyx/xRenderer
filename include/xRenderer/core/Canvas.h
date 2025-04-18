@@ -13,6 +13,7 @@
 #include <iostream>
 #include <memory>
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 template <typename Color> class Canvas {
@@ -92,8 +93,9 @@ public:
       Meshpoint            mPoint = grid.getMeshPoint(linear_index);
       std::vector<Complex> sample_points =
           superSampler->getSamplePoints(mPoint.toComplex(), xymapping);
-      std::vector<Color> sample_colors;
-      sample_colors.reserve(sample_points.size());
+      std::unordered_map<Color, unsigned int> sample_colors;
+      // std::vector<Color> sample_colors_vec;
+      // sample_colors_vec.reserve(sample_points.size());
       for (const Complex &sample_pt : sample_points) {
         Color sample_color = Color::blank();
         for (auto &layer : layers) {
@@ -104,9 +106,16 @@ public:
                                   layer.getMixingMode());
           }
         }
-        sample_colors.push_back(sample_color);
+        auto it = sample_colors.find(sample_color);
+        if (it != sample_colors.end()) {
+          it->second++;
+        } else {
+          sample_colors[sample_color] = 1;
+        }
+        // sample_colors_vec.push_back(sample_color);
       }
-      image(linear_index) = Color::blend(sample_colors);
+      image(linear_index) = Color::blend(sample_colors, sample_points.size());
+      // image(linear_index) = Color::blend(sample_colors_vec);
     }
   }
 
