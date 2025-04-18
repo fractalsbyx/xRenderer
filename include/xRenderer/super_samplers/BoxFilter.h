@@ -24,9 +24,13 @@ public:
   }
 
 private:
-  unsigned int                                  samples_per_pixel = 1;
-  mutable std::mt19937                          rng{2025};
-  mutable std::uniform_real_distribution<float> dist{-0.5f, 0.5f};
+  unsigned int                     samples_per_pixel = 1;
+  static thread_local std::mt19937 rng;
+  static thread_local std::uniform_real_distribution<float> dist;
 };
+
+thread_local std::mt19937                          ShittyBoxFilter::rng{2025};
+thread_local std::uniform_real_distribution<float> ShittyBoxFilter::dist{-0.5f,
+                                                                         0.5f};
 
 #endif // BOXFILTER_H
