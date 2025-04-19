@@ -18,7 +18,7 @@ template <typename T>
 T directed_periodic_difference(const T &upper, const T &lower,
                                const T &period) {
   T diff = std::fmod(upper, period) - std::fmod(lower, period);
-  if (diff <= 0) { diff += period; }
+  if (diff < 0) { diff += period; }
   return diff;
 }
 

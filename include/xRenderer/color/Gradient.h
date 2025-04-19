@@ -54,12 +54,18 @@ public:
    */
   Color calculateColor(const float &position) {
     if (nodes.empty()) { return Color::black(); }
+    if (nodes.size() == 1) { return nodes.begin()->color; } // unnecessary
     const float pos = std::fmod(position, color_loop_length);
-    auto upper_it = lower_bound(nodes.begin(), nodes.end(), Node(Color(), pos));
-    if (upper_it == nodes.end()) { upper_it = nodes.begin(); }
-    auto lower_it =
-        lower_bound(nodes.rbegin(), nodes.rend(), Node(Color(), position));
-    if (lower_it == nodes.rend()) { lower_it = nodes.rbegin(); }
+    auto upper_it = upper_bound(nodes.begin(), nodes.end(), Node(Color(), pos));
+    auto lower_it = upper_it;
+    if (upper_it == nodes.end() || upper_it == nodes.begin()) { //
+      upper_it = nodes.begin();
+      lower_it = nodes.end();
+      --lower_it;
+    } else {
+      --lower_it;
+    }
+
     float dist_lower = directed_periodic_difference(
         position, lower_it->position, color_loop_length);
     float dist_upper = directed_periodic_difference(
@@ -93,9 +99,9 @@ public:
    * @return The estimated color at the given position.
    */
   Color getColor(const coordType &position) const {
-    return lookup[static_cast<unsigned int>(
-        resolution * (std::fmod(position * speed + shift, color_loop_length) /
-                      color_loop_length))];
+    return lookup[static_cast<unsigned int>(((position * speed + shift) *
+                                             resolution / color_loop_length)) %
+                  resolution];
   }
 
   coordType speed = 1.0;

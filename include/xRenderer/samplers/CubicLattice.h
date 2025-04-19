@@ -22,7 +22,6 @@ public:
   ~CubicLattice() override = default;
 
   Color sample(const Complex &p) const override {
-    // return Color::yellow();
     coordType x = 0.0;
     for (unsigned int level = 1; level < depth; ++level) {
       coordType i = static_cast<coordType>(level) + distance;
