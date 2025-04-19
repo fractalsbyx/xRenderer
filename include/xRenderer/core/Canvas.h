@@ -10,11 +10,13 @@
 #include <xRenderer/samplers/Sampler.h>
 #include <xRenderer/super_samplers/SuperSampler.h>
 
+#include <chrono>
 #include <iostream>
 #include <memory>
 #include <thread>
 #include <unordered_map>
 #include <vector>
+
 
 template <typename Color> class Canvas {
 public:
@@ -53,6 +55,8 @@ public:
   }
 
   void draw() {
+    std::chrono::high_resolution_clock::time_point start =
+        std::chrono::high_resolution_clock::now();
     meshInt numThreads = std::thread::hardware_concurrency() * 4;
     std::cout << "Drawing using " << numThreads << " threads.\n";
     std::vector<std::thread> threads;
@@ -65,27 +69,10 @@ public:
     for (auto &thread : threads) {
       thread.join();
     }
-    // for (meshInt linear_index = 0; linear_index < capacity; ++linear_index) {
-    //   Meshpoint            mPoint = grid.getMeshPoint(linear_index);
-    //   std::vector<Complex> sample_points =
-    //       superSampler->getSamplePoints(mPoint.toComplex(), xymapping);
-    //   std::vector<Color> sample_colors;
-    //   sample_colors.reserve(sample_points.size());
-    //   for (const Complex &sample_pt : sample_points) {
-    //     Color sample_color = Color::blank();
-    //     for (auto &layer : layers) {
-    //       if (layer.isVisible()) {
-    //         Color layer_color = layer.sample(sample_pt);
-    //         sample_color =
-    //             Color::applyLayer(sample_color, layer_color,
-    //             layer.getOpacity(),
-    //                               layer.getMixingMode());
-    //       }
-    //     }
-    //     sample_colors.push_back(sample_color);
-    //   }
-    //   image(linear_index) = Color::blend(sample_colors);
-    // }
+    std::chrono::high_resolution_clock::time_point end =
+        std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Draw time: " << elapsed.count() << " seconds\n";
   }
 
   void drawPortion(const meshInt &lo, const meshInt &hi) {

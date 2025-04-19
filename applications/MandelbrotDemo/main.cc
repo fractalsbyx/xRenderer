@@ -69,11 +69,7 @@ int main() {
   canvas.setLocation(center, scale, rotation);
   canvas.addLayer(sampler, identity);
 
-  auto        start = std::chrono::high_resolution_clock::now();
   std::thread drawing(&Canvas<RGBA>::draw, &canvas);
-  auto        end = std::chrono::high_resolution_clock::now();
-  // std::chrono::duration<double> elapsed = end - start;
-  // std::cout << "Draw time: " << elapsed.count() << " seconds\n";
 
   sf::RenderWindow window(sf::VideoMode(xres, yres), "Real-Time Grid");
   sf::Texture      texture;
@@ -81,24 +77,6 @@ int main() {
   sf::Sprite sprite(texture);
 
   std::vector<sf::Uint8> pixels(xres * yres * 4); // RGBA
-
-  // std::thread printing([&]() {
-  //   while (window.isOpen() && drawing.joinable()) {
-  //     sf::Event event;
-  //     while (window.pollEvent(event)) {
-  //       if (event.type == sf::Event::Closed) window.close();
-  //     }
-  //
-  //    texture.update(
-  //        reinterpret_cast<const uint8_t *>(canvas.getImage().getData()));
-  //    // window.clear();
-  //    window.draw(sprite);
-  //    window.display();
-  //  }
-  //}
-  //                     //, std::ref(canvas), std::ref(texture),
-  //                     std::ref(window)
-  //);
 
   while (window.isOpen() && drawing.joinable()) {
     sf::Event event;
