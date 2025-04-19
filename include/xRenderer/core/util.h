@@ -22,4 +22,15 @@ T directed_periodic_difference(const T &upper, const T &lower,
   return diff;
 }
 
+template <typename number> number power(number base, int exp) {
+  if (exp == 0) { return 1; }
+  if (exp < 0) { return 1.0 / power(base, -exp); }
+  if (exp % 2 == 0) {
+    number half_power = power(base, exp / 2);
+    return half_power * half_power;
+  } else {
+    return base * power(base, exp - 1);
+  }
+}
+
 #endif // UTIL_H

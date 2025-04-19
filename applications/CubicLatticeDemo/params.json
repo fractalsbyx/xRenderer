@@ -1,0 +1,16 @@
+{
+    "x_resolution": 600,
+    "y_resolution": 600,
+    "samples_per_pixel": 40,
+    "depth": 200,
+    "sharpness": 32,
+    "color_speed": 25.0,
+    "color_shift": 355.0,
+    "center": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "zoom": 1.0,
+    "rotation": 0.0,
+    "output_file": "cubic.png"
+}

@@ -94,9 +94,12 @@ public:
    */
   Color getColor(const coordType &position) const {
     return lookup[static_cast<unsigned int>(
-        resolution *
-        (std::fmod(position, color_loop_length) / color_loop_length))];
+        resolution * (std::fmod(position * speed + shift, color_loop_length) /
+                      color_loop_length))];
   }
+
+  coordType speed = 1.0;
+  coordType shift = 0.0;
 
 private:
   std::set<Node>     nodes;
