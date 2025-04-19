@@ -10,7 +10,7 @@
 #include <xRenderer/core/typedefs.h>
 #include <xRenderer/mappings/Mapping.h>
 #include <xRenderer/samplers/Mandelbrot.h>
-#include <xRenderer/super_samplers/BoxFilter.h>
+#include <xRenderer/super_samplers/GaussianFilter.h>
 
 #include <chrono>
 #include <cstdint>
@@ -58,7 +58,7 @@ int main() {
 
   // Supersampler
   std::shared_ptr<SuperSampler> super_sampler =
-      std::make_shared<ShittyBoxFilter>(samples_per_pixel);
+      std::make_shared<GaussianFilter>(samples_per_pixel);
 
   // Create Canvas
   Canvas<RGBA> canvas(xres, yres, super_sampler);

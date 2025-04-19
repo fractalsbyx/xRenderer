@@ -1,8 +1,8 @@
 {
     "x_resolution": 800,
     "y_resolution": 600,
-    "samples_per_pixel": 10,
-    "max_iterations": 5000,
+    "samples_per_pixel": 1000,
+    "max_iterations": 1000,
     "bailout_value": 512.0,
     "center": {
         "x": -1.942032320004705,
