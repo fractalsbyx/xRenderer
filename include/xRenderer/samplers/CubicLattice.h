@@ -13,8 +13,8 @@
 template <typename Color> class CubicLattice : public Sampler<Color> {
 public:
   CubicLattice() = default;
-  CubicLattice(const unsigned int &depth, const coordType &distance,
-               const coordType &distance_law, const Complex &shift,
+  CubicLattice(const unsigned int &depth, const realType &distance,
+               const realType &distance_law, const Complex &shift,
                const int &sharpness, std::shared_ptr<Gradient<Color>> grad)
 
       : depth(depth), distance(distance), distance_law(distance_law),
@@ -22,11 +22,11 @@ public:
   ~CubicLattice() override = default;
 
   Color sample(const Complex &p) const override {
-    coordType x = 0.0;
+    realType x = 0.0;
     for (unsigned int level = 1; level < depth; ++level) {
-      coordType i = static_cast<coordType>(level) + distance;
-      coordType d = std::sqrt(i * i + i * p.real() * i * p.real() +
-                              i * p.imag() * i * p.imag());
+      realType i = static_cast<realType>(level) + distance;
+      realType d = std::sqrt(i * i + i * p.real() * i * p.real() +
+                             i * p.imag() * i * p.imag());
       x += std::pow(d, -distance_law) *
            power( //
                std::cos(M_PI * (i * p.real() - shift.real())) *
@@ -36,8 +36,8 @@ public:
     return gradient->getColor(x);
   }
   unsigned int                     depth        = 100;
-  coordType                        distance     = 0.0;
-  coordType                        distance_law = 0.5;
+  realType                         distance     = 0.0;
+  realType                         distance_law = 0.5;
   Complex                          shift        = Complex(0.0, 0.0);
   int                              sharpness    = 32;
   std::shared_ptr<Gradient<Color>> gradient     = nullptr;

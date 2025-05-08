@@ -9,7 +9,7 @@ struct Meshpoint {
   meshInt y_index;
 
   Complex toComplex() const {
-    return Complex(coordType(x_index), coordType(y_index));
+    return Complex(realType(x_index), realType(y_index));
   }
 
   Meshpoint(meshInt x, meshInt y) : x_index(x), y_index(y) {}

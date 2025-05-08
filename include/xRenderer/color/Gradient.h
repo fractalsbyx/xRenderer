@@ -98,14 +98,14 @@ public:
    * @param position The position within the color loop.
    * @return The estimated color at the given position.
    */
-  Color getColor(const coordType &position) const {
+  Color getColor(const realType &position) const {
     return lookup[static_cast<unsigned int>(((position * speed + shift) *
                                              resolution / color_loop_length)) %
                   resolution];
   }
 
-  coordType speed = 1.0;
-  coordType shift = 0.0;
+  realType speed = 1.0;
+  realType shift = 0.0;
 
 private:
   std::set<Node>     nodes;

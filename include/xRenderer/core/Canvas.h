@@ -17,7 +17,6 @@
 #include <unordered_map>
 #include <vector>
 
-
 template <typename Color> class Canvas {
 public:
   Canvas(const meshInt &_xres, const meshInt &_yres,
@@ -41,8 +40,8 @@ public:
     superSampler = sampler;
   }
 
-  void setLocation(const Complex &x, const coordType &s,
-                   const coordType &rotation = 0.0) {
+  void setLocation(const Complex &x, const realType &s,
+                   const realType &rotation = 0.0) {
     xymapping.setLocation(x, s, rotation);
   }
 

@@ -42,9 +42,9 @@ int main() {
   Complex center(params.at("center").at("x").get<float>(),
                  params.at("center").at("y").get<float>());
   // Set the scale
-  coordType scale = 1.0f / params.at("zoom").get<float>();
+  realType scale = 1.0f / params.at("zoom").get<float>();
   // Set the rotation
-  coordType rotation = params.at("rotation").get<float>();
+  realType rotation = params.at("rotation").get<float>();
 
   std::string output_file = params.at("output_file").get<std::string>();
 

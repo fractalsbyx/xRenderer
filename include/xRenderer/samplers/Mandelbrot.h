@@ -8,7 +8,7 @@
 template <typename Color> class Mandelbrot : public Sampler<Color> {
 public:
   Mandelbrot() = default;
-  Mandelbrot(const unsigned int &max_iter, const coordType &bailout_val,
+  Mandelbrot(const unsigned int &max_iter, const realType &bailout_val,
              std::shared_ptr<Gradient<Color>> grad)
       : max_iterations(max_iter), bailout_value(bailout_val), gradient(grad) {}
   ~Mandelbrot() override = default;
@@ -27,7 +27,7 @@ public:
     return gradient->getColor(20.f * float(curr_iter));
   }
   unsigned int                     max_iterations = 1000;
-  coordType                        bailout_value  = 4.0;
+  realType                         bailout_value  = 4.0;
   std::shared_ptr<Gradient<Color>> gradient       = nullptr;
 };
 

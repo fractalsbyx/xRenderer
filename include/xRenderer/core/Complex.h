@@ -8,10 +8,10 @@
 #include <stdexcept>
 
 struct Complex {
-  coordType x;
-  coordType y;
+  realType x;
+  realType y;
   Complex() {}
-  Complex(coordType x_val, coordType y_val) : x(x_val), y(y_val) {}
+  Complex(realType x_val, realType y_val) : x(x_val), y(y_val) {}
   Complex(const Complex &other) : x(other.x), y(other.y) {}
 
   // Binary operators of complex numbers
@@ -25,22 +25,22 @@ struct Complex {
     return Complex(x * other.x - y * other.y, x * other.y + y * other.x);
   }
   Complex operator/(const Complex &other) const {
-    coordType denom = other.x * other.x + other.y * other.y;
+    realType denom = other.x * other.x + other.y * other.y;
     return Complex((x * other.x + y * other.y) / denom,
                    (y * other.x - x * other.y) / denom);
   }
 
   // Binary operators of complex numbers with scalar
-  Complex operator+(const coordType &scalar) const {
+  Complex operator+(const realType &scalar) const {
     return Complex(x + scalar, y);
   }
-  Complex operator-(const coordType &scalar) const {
+  Complex operator-(const realType &scalar) const {
     return Complex(x - scalar, y);
   }
-  Complex operator*(const coordType &scalar) const {
+  Complex operator*(const realType &scalar) const {
     return Complex(x * scalar, y * scalar);
   }
-  Complex operator/(const coordType &scalar) const {
+  Complex operator/(const realType &scalar) const {
     return Complex(x / scalar, y / scalar);
   }
 
@@ -63,39 +63,39 @@ struct Complex {
     return *this;
   }
   Complex &operator*=(const Complex &other) {
-    coordType temp_x = x;
-    x                = x * other.x - y * other.y;
-    y                = temp_x * other.y + y * other.x;
+    realType temp_x = x;
+    x               = x * other.x - y * other.y;
+    y               = temp_x * other.y + y * other.x;
     return *this;
   }
   Complex &operator/=(const Complex &other) {
-    coordType denom  = other.x * other.x + other.y * other.y;
-    coordType temp_x = x;
-    x                = (x * other.x + y * other.y) / denom;
-    y                = (y * other.x - temp_x * other.y) / denom;
+    realType denom  = other.x * other.x + other.y * other.y;
+    realType temp_x = x;
+    x               = (x * other.x + y * other.y) / denom;
+    y               = (y * other.x - temp_x * other.y) / denom;
     return *this;
   }
 
   // Assignment operators with scalar
-  Complex &operator=(const coordType &scalar) {
+  Complex &operator=(const realType &scalar) {
     x = scalar;
     y = 0;
     return *this;
   }
-  Complex &operator+=(const coordType &scalar) {
+  Complex &operator+=(const realType &scalar) {
     x += scalar;
     return *this;
   }
-  Complex &operator-=(const coordType &scalar) {
+  Complex &operator-=(const realType &scalar) {
     x -= scalar;
     return *this;
   }
-  Complex &operator*=(const coordType &scalar) {
+  Complex &operator*=(const realType &scalar) {
     x *= scalar;
     y *= scalar;
     return *this;
   }
-  Complex &operator/=(const coordType &scalar) {
+  Complex &operator/=(const realType &scalar) {
     x /= scalar;
     y /= scalar;
     return *this;
@@ -108,14 +108,14 @@ struct Complex {
 
   // Other functions
 
-  coordType real() const { return x; }
-  coordType imag() const { return y; }
-  Complex   conjugate() const { return Complex(x, -y); }
-  coordType mag() const { return std::sqrt(x * x + y * y); }
-  coordType mag2() const { return x * x + y * y; }
+  realType real() const { return x; }
+  realType imag() const { return y; }
+  Complex  conjugate() const { return Complex(x, -y); }
+  realType mag() const { return std::sqrt(x * x + y * y); }
+  realType mag2() const { return x * x + y * y; }
 
-  coordType arg() const { return std::atan2(y, x); }
-  Complex   exp() const {
+  realType arg() const { return std::atan2(y, x); }
+  Complex  exp() const {
     return Complex(std::exp(x) * std::cos(y), std::exp(x) * std::sin(y));
   }
   Complex log() const { return Complex(std::log(mag()), arg()); }
@@ -163,15 +163,15 @@ struct Complex {
     return Complex(std::pow(mag(), other.x) * std::cos(other.y * arg()),
                    std::pow(mag(), other.x) * std::sin(other.y * arg()));
   }
-  Complex pow(const coordType &other) const {
+  Complex pow(const realType &other) const {
     return Complex(std::pow(mag(), other) * std::cos(other * arg()),
                    std::pow(mag(), other) * std::sin(other * arg()));
   }
   // Coordinate conversion functions
-  Complex polar(const coordType &r, const coordType &theta) const {
+  Complex polar(const realType &r, const realType &theta) const {
     return Complex(r * std::cos(theta), r * std::sin(theta));
   }
-  Complex cartesian(const coordType &r, const coordType &theta) const {
+  Complex cartesian(const realType &r, const realType &theta) const {
     return Complex(r * std::cos(theta), r * std::sin(theta));
   }
 
@@ -196,40 +196,40 @@ inline std::istream &operator>>(std::istream &is, Complex &c) {
   is >> ch;  // Read the closing parenthesis
   return is;
 }
-inline Complex operator+(const coordType &scalar, const Complex &c) {
+inline Complex operator+(const realType &scalar, const Complex &c) {
   return Complex(scalar + c.x, c.y);
 }
-inline Complex operator-(const coordType &scalar, const Complex &c) {
+inline Complex operator-(const realType &scalar, const Complex &c) {
   return Complex(scalar - c.x, -c.y);
 }
-inline Complex operator*(const coordType &scalar, const Complex &c) {
+inline Complex operator*(const realType &scalar, const Complex &c) {
   return Complex(scalar * c.x, scalar * c.y);
 }
-inline Complex operator/(const coordType &scalar, const Complex &c) {
-  coordType denom = c.x * c.x + c.y * c.y;
+inline Complex operator/(const realType &scalar, const Complex &c) {
+  realType denom = c.x * c.x + c.y * c.y;
   return Complex((scalar * c.x) / denom, (-scalar * c.y) / denom);
 }
-inline coordType real(const Complex &c) { return c.real(); }
-inline coordType imag(const Complex &c) { return c.imag(); }
-inline Complex   conj(const Complex &c) { return c.conjugate(); }
-inline coordType mag(const Complex &c) { return c.mag(); }
-inline coordType mag2(const Complex &c) { return c.mag2(); }
-inline coordType arg(const Complex &c) { return c.arg(); }
-inline Complex   exp(const Complex &c) { return c.exp(); }
-inline Complex   log(const Complex &c) { return c.log(); }
-inline Complex   sqrt(const Complex &c) { return c.sqrt(); }
-inline Complex   sin(const Complex &c) { return c.sin(); }
-inline Complex   cos(const Complex &c) { return c.cos(); }
-inline Complex   tan(const Complex &c) { return c.tan(); }
-inline Complex   sinh(const Complex &c) { return c.sinh(); }
-inline Complex   cosh(const Complex &c) { return c.cosh(); }
-inline Complex   tanh(const Complex &c) { return c.tanh(); }
-inline Complex   asin(const Complex &c) { return c.asin(); }
-inline Complex   acos(const Complex &c) { return c.acos(); }
-inline Complex   atan(const Complex &c) { return c.atan(); }
-inline Complex   asinh(const Complex &c) { return c.asinh(); }
-inline Complex   acosh(const Complex &c) { return c.acosh(); }
-inline Complex   atanh(const Complex &c) { return c.atanh(); }
-inline Complex   abs(const Complex &c) { return c.abs(); }
+inline realType real(const Complex &c) { return c.real(); }
+inline realType imag(const Complex &c) { return c.imag(); }
+inline Complex  conj(const Complex &c) { return c.conjugate(); }
+inline realType mag(const Complex &c) { return c.mag(); }
+inline realType mag2(const Complex &c) { return c.mag2(); }
+inline realType arg(const Complex &c) { return c.arg(); }
+inline Complex  exp(const Complex &c) { return c.exp(); }
+inline Complex  log(const Complex &c) { return c.log(); }
+inline Complex  sqrt(const Complex &c) { return c.sqrt(); }
+inline Complex  sin(const Complex &c) { return c.sin(); }
+inline Complex  cos(const Complex &c) { return c.cos(); }
+inline Complex  tan(const Complex &c) { return c.tan(); }
+inline Complex  sinh(const Complex &c) { return c.sinh(); }
+inline Complex  cosh(const Complex &c) { return c.cosh(); }
+inline Complex  tanh(const Complex &c) { return c.tanh(); }
+inline Complex  asin(const Complex &c) { return c.asin(); }
+inline Complex  acos(const Complex &c) { return c.acos(); }
+inline Complex  atan(const Complex &c) { return c.atan(); }
+inline Complex  asinh(const Complex &c) { return c.asinh(); }
+inline Complex  acosh(const Complex &c) { return c.acosh(); }
+inline Complex  atanh(const Complex &c) { return c.atanh(); }
+inline Complex  abs(const Complex &c) { return c.abs(); }
 
 #endif // COMPLEX_H

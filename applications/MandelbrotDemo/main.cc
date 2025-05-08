@@ -36,14 +36,14 @@ int main() {
   // Set the number of iterations
   unsigned int max_iterations = params.at("max_iterations").get<int>();
   // Set the bailout value
-  coordType bailout_value = params.at("bailout_value").get<float>();
+  realType bailout_value = params.at("bailout_value").get<float>();
   // Set the location of the center
   Complex center(params.at("center").at("x").get<float>(),
                  params.at("center").at("y").get<float>());
   // Set the scale
-  coordType scale = 1.0f / params.at("zoom").get<float>();
+  realType scale = 1.0f / params.at("zoom").get<float>();
   // Set the rotation
-  coordType rotation = params.at("rotation").get<float>();
+  realType rotation = params.at("rotation").get<float>();
 
   std::string output_file = params.at("output_file").get<std::string>();
 
