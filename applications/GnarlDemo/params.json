@@ -1,16 +1,22 @@
 {
     "x_resolution": 600,
     "y_resolution": 600,
-    "samples_per_pixel": 200,
-    "time": 20,
-    "dt": 0.1,
+    "samples_per_pixel": 36,
+    "time": 1,
+    "dt": 0.01,
+    "symmetry": 5,
+    "scale1": 1.0,
+    "weight1": 1.0,
+    "scale2": 0.15,
+    "weight2": 0.1,
+    "circle_fraction": 0.25,
     "color_speed": 30.0,
-    "color_shift": 0.0,
+    "color_shift": 40.0,
     "center": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -0.053172349,
+        "y": 16.7378111545
     },
-    "zoom": 0.25,
+    "zoom": 0.1,
     "rotation": 0.0,
     "output_file": "gnarldemo.png"
 }

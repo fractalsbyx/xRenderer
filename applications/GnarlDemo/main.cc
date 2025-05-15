@@ -35,8 +35,16 @@ main() {
   // Set the number of samples per pixel
   unsigned int samples_per_pixel = params.at("samples_per_pixel").get<int>();
   // Set the number of iterations
-  realType time = params.at("time").get<double>();
-  realType dt   = params.at("dt").get<double>();
+  realType time            = params.at("time").get<double>();
+  realType dt              = params.at("dt").get<double>();
+  realType circle_fraction = params.at("circle_fraction").get<double>();
+
+  unsigned int sym     = params.at("symmetry").get<int>();
+  realType     scale1  = params.at("scale1").get<double>();
+  realType     weight1 = params.at("weight1").get<double>();
+  realType     scale2  = params.at("scale2").get<double>();
+  realType     weight2 = params.at("weight2").get<double>();
+
   // Set color speed
   float color_speed = params.at("color_speed").get<float>();
   float color_shift = params.at("color_shift").get<float>();
@@ -62,18 +70,59 @@ main() {
   class SquareGnarl : public GnarlGenerator {
   public:
     Dual2D
-    generator(const Dual2D &x, const Dual2D &y) override {
+    generator(const Dual2D &x, const Dual2D &y) const override {
       return cos(x) * cos(y);
     }
   };
+  // Define a Gnarl generator
+  class FunGnarl : public GnarlGenerator {
+  public:
+    // Constructor
+    FunGnarl(unsigned int _sym = 5, realType _scale1 = 1.0,
+             realType _weight1 = 1.0, realType _scale2 = 0.15,
+             realType _weight2 = 0.1)
+        : sym(_sym), scale1(_scale1), weight1(_weight1), scale2(_scale2),
+          weight2(_weight2) {}
+
+    Dual2D
+    generator(const Dual2D &x, const Dual2D &y) const override {
+      return weight1 * symwaves(x, y, scale1) +
+             weight2 * symwaves(x, y, scale2);
+    }
+
+    Dual2D
+    symwaves(const Dual2D &x, const Dual2D &y, const realType &sc) const {
+      // Symmetric waves
+      Dual2D result = Dual2D(0.0, Vector2D(0.0, 0.0));
+      for (unsigned int i = 1; i <= sym; ++i) {
+        result += cos(M_PI * rotate(x, y, i * M_PI / sym).first / sc);
+      }
+      return result;
+    }
+
+    std::pair<Dual2D, Dual2D>
+    rotate(const Dual2D &x, const Dual2D &y, const realType &angle) const {
+      // Rotate the coordinates by the given angle
+      return std::make_pair(std::cos(angle) * x - std::sin(angle) * y,
+                            std::sin(angle) * x + std::cos(angle) * y);
+    }
+
+    // Parameters for the generator
+    unsigned int sym;     // Number of symmetric waves
+    realType     scale1;  // Scale for the first wave
+    realType     weight1; // Weight for the first wave
+    realType     scale2;  // Scale for the second wave
+    realType     weight2; // Weight for the second wave
+  };
 
   // Create a square generator
-  std::shared_ptr<SquareGnarl> square_generator =
-      std::make_shared<SquareGnarl>();
+  std::shared_ptr<GnarlGenerator> square_generator =
+      std::make_shared<FunGnarl>(sym, scale1, weight1, scale2, weight2);
 
   // Make a Gnarl sampler
-  std::shared_ptr<Sampler<RGBA>> sampler =
-      std::make_shared<GnarlBase<RGBA>>(time, dt, square_generator, gradient);
+  std::shared_ptr<Sampler<RGBA>> sampler = std::make_shared<GnarlBase<RGBA>>(
+      time, dt, (2.0 * M_PI * circle_fraction), true, square_generator,
+      gradient);
 
   // Supersampler
   std::shared_ptr<SuperSampler> super_sampler =
