@@ -12,6 +12,7 @@
     "circle_fraction": 0.25,
     "color_speed": 30.0,
     "color_shift": 40.0,
+    "layer2_opacity": 0.5,
     "center": {
         "x": -0.053172349,
         "y": 16.7378111545

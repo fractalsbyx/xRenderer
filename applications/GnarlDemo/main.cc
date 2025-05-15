@@ -48,6 +48,9 @@ main() {
   // Set color speed
   float color_speed = params.at("color_speed").get<float>();
   float color_shift = params.at("color_shift").get<float>();
+
+  float layer2_opacity = params.at("layer2_opacity").get<float>();
+
   // Set the location of the center
   Complex center(params.at("center").at("x").get<float>(),
                  params.at("center").at("y").get<float>());
@@ -59,12 +62,21 @@ main() {
   std::string output_file = params.at("output_file").get<std::string>();
 
   // Make a gradient
-  std::shared_ptr<Gradient<RGBA>> gradient = std::make_shared<Gradient<RGBA>>();
-  gradient->addNode(RGBA::cyan(), 0.0);
-  gradient->addNode(RGBA::magenta(), 120.0);
-  gradient->addNode(RGBA::white(), 240.0);
-  gradient->speed = color_speed;
-  gradient->shift = color_shift;
+  std::shared_ptr<Gradient<RGBA>> gradient1 =
+      std::make_shared<Gradient<RGBA>>();
+  gradient1->addNode(RGBA::cyan(), 0.0);
+  gradient1->addNode(RGBA::magenta(), 120.0);
+  gradient1->addNode(RGBA::white(), 240.0);
+  gradient1->speed = color_speed;
+  gradient1->shift = color_shift;
+
+  std::shared_ptr<Gradient<RGBA>> gradient2 =
+      std::make_shared<Gradient<RGBA>>();
+  gradient2->addNode(RGBA::cyan(), 0.0);
+  gradient2->addNode(RGBA::yellow(), 120.0);
+  gradient2->addNode(RGBA::white(), 240.0);
+  gradient2->speed = color_speed;
+  gradient2->shift = color_shift;
 
   // Define a Gnarl generator
   class SquareGnarl : public GnarlGenerator {
@@ -115,14 +127,17 @@ main() {
     realType     weight2; // Weight for the second wave
   };
 
-  // Create a square generator
-  std::shared_ptr<GnarlGenerator> square_generator =
+  // Create a generator
+  std::shared_ptr<GnarlGenerator> fun_generator =
       std::make_shared<FunGnarl>(sym, scale1, weight1, scale2, weight2);
 
   // Make a Gnarl sampler
-  std::shared_ptr<Sampler<RGBA>> sampler = std::make_shared<GnarlBase<RGBA>>(
-      time, dt, (2.0 * M_PI * circle_fraction), true, square_generator,
-      gradient);
+  std::shared_ptr<Sampler<RGBA>> sampler1 = std::make_shared<GnarlBase<RGBA>>(
+      time, dt, (2.0 * M_PI * circle_fraction), true, fun_generator, gradient1);
+
+  std::shared_ptr<Sampler<RGBA>> sampler2 = std::make_shared<GnarlBase<RGBA>>(
+      time, dt, (2.0 * M_PI * circle_fraction), true, fun_generator, gradient2,
+      std::make_shared<ImagSampler>());
 
   // Supersampler
   std::shared_ptr<SuperSampler> super_sampler =
@@ -131,7 +146,9 @@ main() {
   // Create Canvas
   Canvas<RGBA> canvas(xres, yres, super_sampler);
   canvas.setLocation(center, scale, rotation);
-  canvas.addLayer(sampler);
+  canvas.addLayer(sampler1);
+  canvas.addLayer(sampler2);
+  canvas.layers[1].setOpacity(layer2_opacity);
 
   std::thread drawing(&Canvas<RGBA>::draw, &canvas);
 
