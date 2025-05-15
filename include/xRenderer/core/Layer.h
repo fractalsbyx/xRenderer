@@ -10,7 +10,8 @@
 #include <cstdint>
 #include <memory>
 
-template <typename Color> class Layer {
+template <typename Color>
+class Layer {
 public:
   Layer(std::shared_ptr<Sampler<Color>> sampler,
         std::shared_ptr<Mapping>        mapping = std::make_shared<Mapping>(),
@@ -19,21 +20,41 @@ public:
       : sampler(sampler), mapping(mapping), mixing_mode(mixing_mode),
         opacity(opacity), visible(visible) {}
 
-  bool isVisible() const { return visible; }
-  void setVisible(bool v) { visible = v; }
+  bool
+  isVisible() const {
+    return visible;
+  }
+  void
+  setVisible(bool v) {
+    visible = v;
+  }
 
-  const float &getOpacity() const { return opacity; }
-  void         setOpacity(float o) { std::clamp(o, 0.0f, 1.0f); }
+  const float &
+  getOpacity() const {
+    return opacity;
+  }
+  void
+  setOpacity(float o) {
+    opacity = std::clamp(o, 0.0f, 1.0f);
+  }
 
-  const MixingMode &getMixingMode() const { return mixing_mode; }
-  void              setMixingMode(MixingMode mode) { mixing_mode = mode; }
+  const MixingMode &
+  getMixingMode() const {
+    return mixing_mode;
+  }
+  void
+  setMixingMode(MixingMode mode) {
+    mixing_mode = mode;
+  }
 
-  void draw() {
+  void
+  draw() {
     // Implement the drawing logic here
     // This is a placeholder for the actual drawing logic
   }
 
-  Color sample(const Complex &p) const {
+  Color
+  sample(const Complex &p) const {
     return sampler->sample((*mapping)(p));
   }
 
